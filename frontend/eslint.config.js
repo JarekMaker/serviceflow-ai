@@ -17,10 +17,12 @@ export default [
       },
       globals: {
         document: 'readonly',
+        Event: 'readonly',
         fetch: 'readonly',
         HeadersInit: 'readonly',
         localStorage: 'readonly',
         RequestInit: 'readonly',
+        window: 'readonly',
       },
     },
     plugins: {
