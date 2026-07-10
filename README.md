@@ -1,21 +1,23 @@
 # ServiceFlow AI
 
-ServiceFlow AI is a production-inspired automation platform for technical service companies repairing printers, computers, and office equipment. It combines FastAPI business logic, n8n orchestration, AI classification, email and Telegram notifications, PostgreSQL persistence, Redis-ready infrastructure, and a React administrator dashboard.
+ServiceFlow AI is a service request automation platform for technical service companies that repair printers, computers, and office equipment. The system combines a FastAPI backend, n8n workflow orchestration, AI-assisted request classification, email and Telegram notifications, PostgreSQL persistence, Redis-ready infrastructure, and a React administrator dashboard.
 
 ## Business Problem
 
-Service requests often arrive as unstructured text with missing priority, weak routing, duplicate submissions, and no audit trail. ServiceFlow AI turns each request into a traceable ticket with validated AI output, SLA, notification history, and human review when confidence is low.
+Service requests often arrive as unstructured text with missing priority, unclear routing, duplicate submissions, and no consistent audit trail. This project turns each request into a traceable ticket with validated AI output, SLA assignment, notification history, and manual review when confidence is low.
 
 ## Capabilities
 
-- Public request form with validation.
-- AI classification with Anthropic, OpenAI-compatible fallback, and deterministic mock provider.
-- Strict schema validation for AI results.
+- Public service request form with client-side and API-side validation.
+- AI classification through Anthropic, an OpenAI-compatible fallback, or a deterministic local mock provider.
+- Strict schema validation for every AI classification result before it affects ticket state.
 - Duplicate detection and idempotent ticket creation.
-- Manual-review queue for low-confidence or failed classification.
-- SMTP, MailHog, Telegram Bot API, MinIO attachment metadata, n8n workflow exports.
-- JWT admin dashboard with filtering-ready API.
-- Structured JSON logs, request IDs, HMAC validation, health/readiness endpoints.
+- Manual review queue for low-confidence or failed classification.
+- SMTP email flow with MailHog for local testing.
+- Optional Telegram Bot API notification support.
+- MinIO-backed attachment storage integration.
+- JWT-protected administrator dashboard and versioned REST API.
+- Structured JSON logs, request IDs, HMAC validation, health checks, and readiness checks.
 
 ## Technology Stack
 
@@ -93,7 +95,7 @@ cd frontend && npm install && npm test -- --run
 docker compose config
 ```
 
-The mock AI provider is the default and is used for automated tests.
+The mock AI provider is the default for local development and automated tests.
 
 ## Engineering Decisions and Trade-offs
 
@@ -110,14 +112,6 @@ Required: `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET_KEY`, `ADMIN_EMAIL`, `ADMIN_P
 
 Optional: `ANTHROPIC_API_KEY`, `OPENAI_COMPATIBLE_API_KEY`, `OPENAI_COMPATIBLE_BASE_URL`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
 
-## Screenshots
-
-Run the stack and capture the public form, dashboard, MailHog confirmation, and n8n executions for portfolio presentation.
-
 ## Future Improvements
 
-Add real S3 object upload streaming, background notification workers, richer role permissions, OpenTelemetry traces, full Playwright E2E tests, and production deployment manifests.
-
-## Interview Talking Points
-
-ServiceFlow AI demonstrates automation architecture, webhook validation, AI reliability, human-in-the-loop operations, idempotency, retries, secure defaults, Dockerized development, CI, and practical B2B dashboard design.
+Planned improvements include direct S3 object upload streaming, background notification workers, richer role permissions, OpenTelemetry traces, full Playwright end-to-end tests, and production deployment manifests.
