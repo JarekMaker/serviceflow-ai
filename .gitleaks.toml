@@ -1,0 +1,6 @@
+[allowlist]
+description = "Allow documented local-only development defaults"
+paths = [
+  '''\.env\.example$''',
+  '''README\.md$''',
+]
