@@ -9,7 +9,7 @@ jobs:
         with: {python-version: "3.12"}
       - run: pip install -e "backend[dev]"
       - run: ruff check backend/app backend/tests
-      - run: mypy backend/app
+      - run: mypy --config-file backend/pyproject.toml --no-sqlite-cache backend/app
       - run: pytest backend/tests
   frontend:
     runs-on: ubuntu-latest
