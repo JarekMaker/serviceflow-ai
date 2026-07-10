@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -38,6 +38,11 @@ async function apiJson<T>(path: string, init: RequestInit = {}): Promise<T> {
     const detail = Array.isArray(json.detail)
       ? json.detail.map((item: { msg?: string }) => item.msg).join(' ')
       : json.detail
+    if (res.status === 401 && localStorage.getItem('token')) {
+      localStorage.removeItem('token')
+      queryClient.clear()
+      window.dispatchEvent(new Event('serviceflow-auth-expired'))
+    }
     throw new Error(detail || `Request failed with status ${res.status}`)
   }
   return json as T
@@ -124,6 +129,11 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
 function App() {
   const [logged, setLogged] = useState(Boolean(localStorage.getItem('token')))
+  useEffect(() => {
+    const handleAuthExpired = () => setLogged(false)
+    window.addEventListener('serviceflow-auth-expired', handleAuthExpired)
+    return () => window.removeEventListener('serviceflow-auth-expired', handleAuthExpired)
+  }, [])
   function logout() {
     localStorage.removeItem('token')
     queryClient.clear()
